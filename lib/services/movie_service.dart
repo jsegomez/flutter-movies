@@ -74,8 +74,8 @@ class MovieService extends ChangeNotifier {
     }
   }
 
-  Future<List<Movie>> getRelatedMovies(int movieId) async {
-    return await formatDataMovie('/3/movie/$movieId/similar', 1);
+  Future<List<Movie>> getRelatedMovies(Movie movie) async {
+    return await formatDataMovie('/3/movie/${movie.id}/similar', 1);
   }
 
   Future<List<Cast>> getCasting(int movieId) async {

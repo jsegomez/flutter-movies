@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 class RelatedMovie extends StatelessWidget {
   const RelatedMovie({
     Key? key,
-    required this.movieId,
+    required this.movie,
   }) : super(key: key);
 
-  final int movieId;
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class RelatedMovie extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Title(),
-          Cards(movieId: movieId, movieService: moviesProvider),
+          Cards(movie: movie, movieService: moviesProvider),
         ],
       ),
     );
@@ -54,19 +54,19 @@ class Title extends StatelessWidget {
 
 // ===============================================================================================================================================================================
 class Cards extends StatelessWidget {
-  const Cards({Key? key, required this.movieId, required this.movieService})
+  const Cards({Key? key, required this.movie, required this.movieService})
       : super(key: key);
 
   final MovieService movieService;
-  final int movieId;
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: movieService.getRelatedMovies(movieId),
+      future: movieService.getRelatedMovies(movie),
       builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
         if (snapshot.hasData) {
-          final movies = snapshot.data!;
+          var movies = deleteRelated(snapshot.data!, movie);
 
           return Expanded(
             child: ListView.builder(
@@ -119,4 +119,16 @@ class Cards extends StatelessWidget {
       },
     );
   }
+}
+
+List<Movie> deleteRelated(List<Movie> movies, Movie movie) {
+  List<Movie> listMovies = [];
+
+  for (var related in movies) {
+    if (related.id != movie.id) {
+      listMovies.add(related);
+    }
+  }
+
+  return listMovies;
 }

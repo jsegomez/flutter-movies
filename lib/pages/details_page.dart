@@ -25,7 +25,7 @@ class DetailsMovie extends StatelessWidget {
               ),
               TextOverview(movie: movie),
               Casting(movieId: movie.id),
-              RelatedMovie(movieId: movie.id),
+              RelatedMovie(movie: movie),
               const SizedBox(height: 15.0)
             ],
           ),
